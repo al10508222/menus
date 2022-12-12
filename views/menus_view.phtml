@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Menus</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Proyecto Menú</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="index.php">Inicio</a>
+        </li>
+        <?php
+            foreach ($datos_padre as $padre) {
+        ?>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <?php echo $padre['nombre_menu']?>
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <?php 
+                    
+                    foreach ($datos_hijo as $hijo) {
+                      
+                      if($hijo['idmenu_padre'] == $padre['id']){
+                        echo '<li><a class="dropdown-item" href="#">'.$hijo['nombre_menu'].'</a></li>'; 
+                      }
+                    }
+                    ?> 
+                    
+                    
+                  </ul>
+                </li>
+        <?php
+            }
+                
+        ?>
+        
+      </ul>
+      
+    </div>
+  </div>
+</nav>
+<br><br>
+<div class="container">
+    <div class="card">
+      <div class="card-body bg-info">
+        Formulario
+      </div>
+    </div>
+    <form action="" method="post" enctype="multipart/form-data" onsubmit="return confirm('Los datos son correctos?');">
+        <div class="form-group col-md-12">
+            <label for="idmenu_padre">Menú Padre (opcional)</label>
+            <select name="idmenu_padre" class="form-control" id="idmenu_padre">
+                <option value="">Seleccione Menú Padre</option>
+                <?php
+                    foreach ($datos_padre as $padre) {
+                ?>
+                       <option value="<?php echo $padre['id'];?>"><?php echo $padre['nombre_menu']?></option>
+                <?php
+                    }
+                ?>
+            </select>
+        </div>
+        <br>
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <label for="nombre_menu">Nombre Menú</label>
+                <input name="nombre_menu" type="text" class="form-control" placeholder="Nombre del Menú">
+            </div>
+            <br>
+            <div class="form-group col-md-12">
+                <label for="descripcion">Descripción</label>
+                <textarea name="descripcion" type="text" class="form-control" id="descripcion" placeholder="Descripción"></textarea>
+            </div>
+        </div>
+        <br>
+        <div class="form-group float-end">
+            <button name="insertar" type="submit" class="btn btn-primary  btn-block">Guardar</button>
+        </div>
+      </form>
+
+      <table class="table" width="100%">
+        <tr>
+            <th class="center">ID</th>
+            <th class="center">NOMBRE</th>
+            <th class="center">MENU PADRE</th>
+            <th class="center">DESCRIPCION</th>
+            <th class="center">ACCIONES</th>
+        </tr>
+        <?php 
+        
+        foreach ($datos_menus as $menu) {
+          echo '<tr>
+                  <td class="left">'.$menu['id'].'</td>
+                  <td class="left">'.$menu['nombre_menu'].'</td>
+                  <td class="left">'.$menu['menu_padre'].'</td>
+                  <td class="left">'.$menu['descripcion'].'</td>
+                  <td class="text-center"><button class="btn btn-success">Editar</button <br> <button class="btn btn-warning">Eliminar</button</td>
+              </tr>'; 
+        ?>
+
+        <?php
+          }
+        ?>
+        
+        <!-- END BLOCK : rows -->
+    </table>
+                
+  </div>
+    
+</body>
+
+</html>
